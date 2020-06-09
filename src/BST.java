@@ -31,31 +31,37 @@ public class BST<E extends Comparable<E>> {
     public void add(E e) {
         if (root == null) {
             root = new Node(e);
+            size++;
         } else {
-            Node cur = root;
-            while (true) {
-                if (e.compareTo(cur.e) == 0 ) {
-                    return;
-                }
-                if (e.compareTo(cur.e) > 0 ) {
-                    if (cur.right == null) {
-                        cur.right = new Node(e);
-                        break;
-                    } else {
-                        cur = cur.right;
-                    }
-                }
-                if (e.compareTo(cur.e) < 0) {
-                    if (cur.left == null) {
-                        cur.left = new Node(e);
-                        break;
-                    } else {
-                        cur = cur.left;
-                    }
-                }
-            }
+            add(root, e);
         }
-        size++;
+    }
+
+    /**
+     * 向以node为根的二分搜索树插入元素E，递归算法
+     *
+     * @param node
+     * @param e
+     */
+    private void add(Node node, E e) {
+
+        if (e.compareTo(node.e) == 0) {
+            return;
+        } else if (e.compareTo(node.e) > 0 && node.right == null) {
+            node.right = new Node(e);
+            size++;
+            return;
+        } else if (e.compareTo(node.e) < 0 && node.left == null) {
+            node.left = new Node(e);
+            size++;
+            return;
+        }
+
+        if (e.compareTo(node.e) > 0) {
+            add(node.right, e);
+        } else {
+            add(node.left, e);
+        }
     }
 
 
@@ -67,6 +73,7 @@ public class BST<E extends Comparable<E>> {
         bst.add(3);
         bst.add(10);
         bst.add(8);
+        bst.add(7);
         bst.add(11);
 
         System.out.println(bst.root.e);
