@@ -187,6 +187,97 @@ public class BST<E extends Comparable<E>> {
         return rightDepth > leftDepth ? rightDepth : leftDepth;
     }
 
+    /**
+     * 寻找二分搜索树中最小元素
+     *
+     * @return
+     */
+    public E minimum() {
+//        if (root == null) {
+//            return null;
+//        }
+//        Node cur = root;
+//        while (cur.left != null) {
+//            cur = cur.left;
+//        }
+//        return cur.e;
+        if (isEmpty()) {
+            throw new IllegalArgumentException("BST is empty");
+        }
+
+        return minimum(root);
+    }
+
+    private E minimum(Node node) {
+        if (node.left == null) {
+            return node.e;
+        }
+        return minimum(node.left);
+    }
+
+    /**
+     * 寻找二分搜索树中最大元素
+     *
+     * @return
+     */
+    public E maxmum() {
+        if (isEmpty()) {
+            throw new IllegalArgumentException("BST is empty");
+        }
+        return maxmum(root);
+    }
+
+    private E maxmum(Node node) {
+        if (node.right == null) {
+            return node.e;
+        }
+        return maxmum(node.right);
+    }
+
+    /**
+     * 删除最小元素
+     *
+     * @return e
+     */
+    public E removeMin() {
+        E ret = minimum();
+        root = removeMin(root);
+        return ret;
+    }
+
+    private Node removeMin(Node node) {
+        if (node.left == null) {
+            Node rightNode = node.right;
+            node.right = null;
+            size--;
+            return rightNode;
+        }
+        node.left = removeMin(node.left);
+        return node;
+    }
+
+    /**
+     * 删除最大元素
+     *
+     * @return e
+     */
+    public E removeMax() {
+        E ret = maxmum();
+        root = removeMax(root);
+        return ret;
+    }
+
+    private Node removeMax(Node node) {
+        if (node.right == null) {
+            Node leftNode = node.left;
+            node.left = null;
+            size--;
+            return leftNode;
+        }
+        node.right = removeMax(node.right);
+        return node;
+    }
+
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
@@ -235,11 +326,15 @@ public class BST<E extends Comparable<E>> {
 //        System.out.println(bst.contains(9));
 //        bst.preOrder();
 //        System.out.println();
-//        System.out.println(bst);
+        System.out.println(bst);
 //        bst.inOrder();
 //        bst.postOrder();
 //        bst.preOderNR();
-        bst.levelOrder();
+//        bst.levelOrder();
 //        System.out.println(bst.findDepth(bst.root, 0));
+//        System.out.println(bst.minimum());
+//        System.out.println(bst.maxmum());
+        bst.removeMax(bst.root);
+        System.out.println(bst);
     }
 }
