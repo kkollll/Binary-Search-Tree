@@ -71,29 +71,79 @@ public class BST<E extends Comparable<E>> {
         } else if (e.compareTo(node.e) == 0) {
             return true;
         }
-        return contains(e.compareTo(node.e) > 0? node.right : node.left, e);
+        return contains(e.compareTo(node.e) > 0 ? node.right : node.left, e);
+    }
+
+    /**
+     * 二分搜索树前序遍历
+     */
+    public void preOrder() {
+        preOrder(root);
+    }
+
+    /**
+     * 前序遍历以node为根的二分搜索树，递归算法
+     *
+     * @param node
+     */
+    private void preOrder(Node node) {
+//        if (node == null) {
+//            return;
+//        }
+        if (node != null) {
+            System.out.println(node.e);
+            preOrder(node.left);
+            preOrder(node.right);
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder();
+        generateBSTString(root, 0, res);
+        return res.toString();
+    }
+
+    private void generateBSTString(Node node, int depth, StringBuilder res) {
+
+        if (node == null) {
+            res.append(generateDepthString(depth) + "null\n");
+            return;
+        }
+
+        res.append(generateDepthString(depth) + node.e + "\n");
+        generateBSTString(node.left, depth + 1, res);
+        generateBSTString(node.right, depth + 1, res);
+    }
+
+    private String generateDepthString(int depth) {
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            res.append("--");
+        }
+        return res.toString();
     }
 
     public static void main(String[] args) {
         BST<Integer> bst = new BST<>();
-        bst.add(7);
-        bst.add(4);
-        bst.add(2);
-        bst.add(3);
-        bst.add(10);
-        bst.add(8);
-        bst.add(7);
-        bst.add(11);
-
-        System.out.println(bst.root.e);
-        System.out.println(bst.root.left.e);
-        System.out.println(bst.root.left.left.e);
-        System.out.println(bst.root.left.left.right.e);
-        System.out.println(bst.root.e);
-        System.out.println(bst.root.right.e);
-        System.out.println(bst.root.right.left.e);
-        System.out.println(bst.root.right.right.e);
-        System.out.println(bst.getSize());
-        System.out.println(bst.contains(9));
+        int[] nums = {7, 4, 3, 4, 10, 8, 7, 11};
+        for (int num : nums) {
+            bst.add(num);
+        }
+//                    7
+//                   / \
+//                  4  10
+//                 /   / \
+//                3   8   11
+//        System.out.println(bst.root.e);
+//        System.out.println(bst.root.left.e);
+//        System.out.println(bst.root.left.left.e);
+//        System.out.println(bst.root.right.e);
+//        System.out.println(bst.root.right.left.e);
+//        System.out.println(bst.root.right.right.e);
+//        System.out.println(bst.getSize());
+//        System.out.println(bst.contains(9));
+//        bst.preOrder();
+        System.out.println(bst);
     }
 }
