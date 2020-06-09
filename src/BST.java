@@ -29,12 +29,7 @@ public class BST<E extends Comparable<E>> {
     }
 
     public void add(E e) {
-        if (root == null) {
-            root = new Node(e);
-            size++;
-        } else {
-            add(root, e);
-        }
+        root = add(root, e);
     }
 
     /**
@@ -42,26 +37,21 @@ public class BST<E extends Comparable<E>> {
      *
      * @param node
      * @param e
+     * @return 返回插入新节点后的二分搜索树的根
      */
-    private void add(Node node, E e) {
+    private Node add(Node node, E e) {
 
-        if (e.compareTo(node.e) == 0) {
-            return;
-        } else if (e.compareTo(node.e) > 0 && node.right == null) {
-            node.right = new Node(e);
+        if (node == null) {
             size++;
-            return;
-        } else if (e.compareTo(node.e) < 0 && node.left == null) {
-            node.left = new Node(e);
-            size++;
-            return;
+            return new Node(e);
         }
 
         if (e.compareTo(node.e) > 0) {
-            add(node.right, e);
-        } else {
-            add(node.left, e);
+            node.right = add(node.right, e);
+        } else if (e.compareTo(node.e) < 0) {
+            node.left = add(node.left, e);
         }
+        return node;
     }
 
 
