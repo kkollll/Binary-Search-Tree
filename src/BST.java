@@ -1,3 +1,6 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class BST<E extends Comparable<E>> {
 
     private class Node {
@@ -153,8 +156,38 @@ public class BST<E extends Comparable<E>> {
         postOrder(root);
     }
 
-    @Override
+    /**
+     * 层序遍历 广度遍历
+     */
+    public void levelOrder() {
 
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            Node cur = q.remove();
+            System.out.println(cur.e);
+            if (cur.left != null) {
+                q.add(cur.left);
+            }
+            if (cur.right != null) {
+                q.add(cur.right);
+            }
+        }
+    }
+
+    public int findDepth(Node node, int depth) {
+        if (node == null) {
+            return depth;
+        }
+
+        int rightDepth = findDepth(node.right, depth + 1);
+        int leftDepth = findDepth(node.left, depth + 1);
+
+
+        return rightDepth > leftDepth ? rightDepth : leftDepth;
+    }
+
+    @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
         generateBSTString(root, 0, res);
@@ -200,11 +233,13 @@ public class BST<E extends Comparable<E>> {
 //        System.out.println(bst.root.right.right.e);
 //        System.out.println(bst.getSize());
 //        System.out.println(bst.contains(9));
-        bst.preOrder();
-        System.out.println();
+//        bst.preOrder();
+//        System.out.println();
 //        System.out.println(bst);
 //        bst.inOrder();
 //        bst.postOrder();
-        bst.preOderNR();
+//        bst.preOderNR();
+        bst.levelOrder();
+//        System.out.println(bst.findDepth(bst.root, 0));
     }
 }
