@@ -54,6 +54,25 @@ public class BST<E extends Comparable<E>> {
         return node;
     }
 
+    /**
+     * 查询元素
+     *
+     * @param e
+     * @return
+     */
+    public boolean contains(E e) {
+        return contains(root, e);
+    }
+
+
+    private boolean contains(Node node, E e) {
+        if (node == null) {
+            return false;
+        } else if (e.compareTo(node.e) == 0) {
+            return true;
+        }
+        return contains(e.compareTo(node.e) > 0? node.right : node.left, e);
+    }
 
     public static void main(String[] args) {
         BST<Integer> bst = new BST<>();
@@ -75,5 +94,6 @@ public class BST<E extends Comparable<E>> {
         System.out.println(bst.root.right.left.e);
         System.out.println(bst.root.right.right.e);
         System.out.println(bst.getSize());
+        System.out.println(bst.contains(9));
     }
 }
