@@ -97,7 +97,44 @@ public class BST<E extends Comparable<E>> {
         }
     }
 
+    public void inOrder() {
+        inOrder(root);
+    }
+
+    /**
+     * 中序遍历以node为根的二分搜索树，递归算法
+     * 排序树
+     *
+     * @param node
+     */
+    private void inOrder(Node node) {
+        if (node != null) {
+            inOrder(node.left);
+            System.out.println(node.e);
+            inOrder(node.right);
+        }
+    }
+
+    /**
+     * 后序遍历以node为根的二分搜索树，递归算法
+     * 应用：为二分搜索树释放内存
+     *
+     * @param node
+     */
+    private void postOrder(Node node) {
+        if (node != null) {
+            inOrder(node.left);
+            inOrder(node.right);
+            System.out.println(node.e);
+        }
+    }
+
+    public void postOrder() {
+        postOrder(root);
+    }
+
     @Override
+
     public String toString() {
         StringBuilder res = new StringBuilder();
         generateBSTString(root, 0, res);
@@ -144,6 +181,8 @@ public class BST<E extends Comparable<E>> {
 //        System.out.println(bst.getSize());
 //        System.out.println(bst.contains(9));
 //        bst.preOrder();
-        System.out.println(bst);
+//        System.out.println(bst);
+//        bst.inOrder();
+        bst.postOrder();
     }
 }
