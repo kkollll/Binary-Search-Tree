@@ -97,6 +97,26 @@ public class BST<E extends Comparable<E>> {
         }
     }
 
+    /**
+     * 二分搜索书非递归前序遍历
+     */
+    public void preOderNR() {
+        ArrayStack<Node> stack = new ArrayStack<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            Node cur = stack.pop();
+            System.out.println(cur.e);
+
+            if (cur.right != null) {
+                stack.push(cur.right);
+            }
+            if (cur.left != null) {
+                stack.push(cur.left);
+            }
+        }
+
+    }
+
     public void inOrder() {
         inOrder(root);
     }
@@ -180,9 +200,11 @@ public class BST<E extends Comparable<E>> {
 //        System.out.println(bst.root.right.right.e);
 //        System.out.println(bst.getSize());
 //        System.out.println(bst.contains(9));
-//        bst.preOrder();
+        bst.preOrder();
+        System.out.println();
 //        System.out.println(bst);
 //        bst.inOrder();
-        bst.postOrder();
+//        bst.postOrder();
+        bst.preOderNR();
     }
 }
