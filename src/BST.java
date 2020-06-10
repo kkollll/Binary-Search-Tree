@@ -104,17 +104,29 @@ public class BST<E extends Comparable<E>> {
      * 二分搜索书非递归前序遍历
      */
     public void preOderNR() {
-        ArrayStack<Node> stack = new ArrayStack<>();
-        stack.push(root);
-        while (!stack.isEmpty()) {
-            Node cur = stack.pop();
+//        ArrayStack<Node> stack = new ArrayStack<>();
+//        stack.push(root);
+//        while (!stack.isEmpty()) {
+//            Node cur = stack.pop();
+//            System.out.println(cur.e);
+//
+//            if (cur.right != null) {
+//                stack.push(cur.right);
+//            }
+//            if (cur.left != null) {
+//                stack.push(cur.left);
+//            }
+//        }
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            Node cur = q.remove();
             System.out.println(cur.e);
-
-            if (cur.right != null) {
-                stack.push(cur.right);
-            }
             if (cur.left != null) {
-                stack.push(cur.left);
+                q.add(cur.left);
+            }
+            if (cur.right != null) {
+                q.add(cur.right);
             }
         }
 
@@ -278,6 +290,11 @@ public class BST<E extends Comparable<E>> {
         return node;
     }
 
+    /**
+     * 删除元素
+     *
+     * @param e
+     */
     public void remove(E e) {
         root = remove(root, e);
     }
@@ -286,11 +303,12 @@ public class BST<E extends Comparable<E>> {
         if (node == null) {
             return null;
         }
-        if (e.compareTo(node.e) < 0) {
-            node.left = remove(node.left, e);
-            return node;
-        } else if (e.compareTo(node.e) > 0) {
+
+        if (e.compareTo(node.e) > 0) {
             node.right = remove(node.right, e);
+            return node;
+        } else if (e.compareTo(node.e) < 0) {
+            node.left = remove(node.left, e);
             return node;
         } else {
             if (node.left == null) {
@@ -306,16 +324,83 @@ public class BST<E extends Comparable<E>> {
                 return leftNode;
             }
 
-            // 待删除节点左右子树均不为空的情况
-            // 找到比待删除节点大的最小节点，即待删除节点右子树的最小节点
-            // 用这个节点顶替待删除的节点位置
             Node successor = minimum(node.right);
             successor.right = removeMin(node.right);
             successor.left = node.left;
-            node.left = node.right = null;
+            node.right = node.left = null;
+
             return successor;
         }
     }
+
+    /**
+     * 求比元素小的最大值
+     *
+     * @param e
+     * @return
+     */
+    public E floor(E e) {
+        if (isEmpty() || e.compareTo(minimum()) < 0) {
+            return null;
+        }
+        return floor(root, e).e;
+    }
+
+    private Node floor(Node node, E e) {
+        if (node == null) {
+            return null;
+        }
+
+        if (node.e.compareTo(e) == 0) {
+            return node;
+        }
+
+        if (e.compareTo(node.e) < 0) {
+            return floor(node.left, e);
+        }
+
+        Node tempNode = floor(node.right, e);
+        if (tempNode != null) {
+            return tempNode;
+        }
+
+        return node;
+    }
+
+    /**
+     * 求比元素大的最小值
+     *
+     * @param e
+     * @return
+     */
+    public E ceil(E e) {
+        if (isEmpty() || e.compareTo(maxmum()) > 0) {
+            return null;
+        }
+        return ceil(root, e).e;
+    }
+
+    private Node ceil(Node node, E e) {
+        if (node == null) {
+            return null;
+        }
+
+        if (e.compareTo(node.e) == 0) {
+            return node;
+        }
+
+        if (e.compareTo(node.e) > 0) {
+            return ceil(node.right, e);
+        }
+
+        Node tempNode = ceil(node.left, e);
+        if (tempNode != null) {
+            return tempNode;
+        }
+
+        return node;
+    }
+
 
     @Override
     public String toString() {
@@ -346,15 +431,19 @@ public class BST<E extends Comparable<E>> {
 
     public static void main(String[] args) {
         BST<Integer> bst = new BST<>();
-        int[] nums = {7, 4, 3, 4, 10, 8, 7, 11};
+        int[] nums = {41, 22, 58, 16, 13, 12, 33, 37, 50, 63, 42, 53};
         for (int num : nums) {
             bst.add(num);
         }
-//                    7
-//                   / \
-//                  4  10
-//                 /   / \
-//                3   8   11
+//                        41
+//                   /         \
+//                  22          58
+//                 /  \        /  \
+//                16   33     50   63
+//               /      \     / \
+//              13      37   42  53
+//              /
+//             12
 //        System.out.println(bst.root.e);
 //        System.out.println(bst.root.left.e);
 //        System.out.println(bst.root.left.left.e);
@@ -374,7 +463,9 @@ public class BST<E extends Comparable<E>> {
 //        System.out.println(bst.minimum());
 //        System.out.println(bst.maxmum());
 //        bst.removeMax(bst.root);
-        bst.remove(10);
-        System.out.println(bst);
+//        bst.remove(10);
+//        System.out.println(bst);
+        System.out.println(bst.floor(11));
+        System.out.println(bst.ceil(11));
     }
 }
